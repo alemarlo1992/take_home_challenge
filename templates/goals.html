@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title%}Goals{% endblock %}
+
+ 
+
+{% block content%}
+<body onload="checkEdits()">
+<div class="contentcontainer med left" style="margin-left: 200px; margin-right:200px">
+    <h2>Goals</h2>
+    <div class="comment_box" id="comment_box">
+
+        <form action='/goals' method="POST">
+            <label> Add a goal 
+            </label><br>
+            <textarea class="form-control" name="goal" rows="6" class="form-control" placeholder="Goals here">
+            </textarea><br>
+            <button type="submit" class="btn btn-primary" >
+            Submit
+            </button>
+        </form>
+    </div><br>
+
+
+    <div class="card">
+        {% for goal in goals %}
+        <div class="card-header">
+            {{ goal.user.name }}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ goal.goal_date }}</h5>
+            <div id="edit" contenteditable="true">
+                <div id="update">
+            <p class="card-text">{{ goal.goal }}</p>
+            </div>
+           
+           </div>
+
+        </div>
+         <input type="button" value="save my edits" onclick="saveEdits()"/> 
+        {% endfor %}
+    </div>
+    
+</div> 
+
+<script type="text/javascript">
+    function saveEdits() {
+
+    //get the editable element
+    var editElem = document.getElementById("edit");
+
+    //get the edited element content
+    var userVersion = editElem.innerHTML;
+
+    //save the content to local storage
+    localStorage.userEdits = userVersion;
+
+    //write a confirmation to the user
+    document.getElementById("update");
+
+}
+</script>
+<script type="text/javascript">
+    
+    function checkEdits() {
+
+    //find out if the user has previously saved edits
+    if(localStorage.userEdits!=null)
+    document.getElementById("edit").innerHTML = localStorage.userEdits;
+}
+</script>
+</body>
+{% endblock %}

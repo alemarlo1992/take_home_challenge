@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="container align-items-center">
+        <div class="row">
+            <div class="col-lg col-centered" id=climate>
+                <div>
+                    <h2 class="text-center">Goals</h2>
+                </div>
+            </div>
+                <div class="col-sm-1 col-centered">
+                </div>
+
+
+                <div class="col-sm col-centered" id="login_reg">
+                    {% if 'user_id' in session %}
+                    <div>
+                            <a href="/goals"><button type="button" class="btn btn-primary btn-lg btn-block">Goal Input </button></a>
+                            <br>
+
+                    </div>
+
+                    {% else %}
+                    <div>
+                        <a href="/login">
+                        <button type="button" class="btn btn-primary btn-lg btn-block">Login Here
+                        </button>
+                        </a>
+                        <br>
+                        <a href="/register"><button type="button" class="btn btn-secondary btn-lg btn-block">Sign up
+                        </button>
+                        </a>
+                    </div>
+                    {% endif %}
+                    </div>        
+            </div>
+    </div>
+</div>  
+
+{% endblock %}
