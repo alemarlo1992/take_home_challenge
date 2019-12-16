@@ -52,27 +52,72 @@ class Goal(db.Model):
                     user_id: {self.user_id},
                     goal: {self.goal}>"""
 
-def connect_to_db(app):
+#------------------------------------------------------------------------------#
+#test samples 
+def example_data():
+    """Populate a databse with sample data for testing purposes."""
+
+    db.create_all()
+
+
+    #Empty out data from previous runs
+    User.query.delete()
+    Metric.query.delete()
+    Rec.query.delete()
+
+    #Add sample users, books, and ratings
+
+    #sample users
+    user1 = User(user_id=1, email='123@test.com', password_hash='password')
+    user2 = User(user_id=2, email='456@test.com', password_hash='password')
+    user3 = User(user_id=3, email='789@test.com', password_hash='password')
+    user4 = User(user_id=4, email='987@test.com', password_hash='password')
+    user5 = User(user_id=5, email='654@test.com', password_hash='password')
+
+    user1_goal = Goal(goal_id=1, 
+                        user_id=1, 
+                        goal="I want to eat more veggies", 
+                        goal_date="2019-11-27 03:44:48.075786")
+
+    user2_goal = Goal(goal_id=2, 
+                        user_id=2, 
+                        goal="Drink more water", 
+                        goal_date="2019-11-27 03:44:48.075786")
+    user3_goal = Goal(goal_id=3, 
+                        user_id=3, 
+                        goal="Exercise more", 
+                        goal_date="2019-11-27 03:44:48.075786")
+    user4_goal = Goal(goal_id=4, 
+                        user_id=4, 
+                        goal="Read more books", 
+                        goal_date="2019-11-27 03:44:48.075786")
+    user5_goal = Goal(goal_id=5, 
+                        user_id=5, 
+                        goal="Become vegetarian", 
+                        goal_date="2019-11-27 03:44:48.075786")
+
+    #Add all to session and commit
+    db.session.add_all([user1, user2, user3, user4, user5, user1_goal, user2_goal, 
+                        user3_goal, user4_goal, user5_goal])
+
+    db.session.commit()
+#------------------------------------------------------------------------------#
+def connect_to_db(app, db_uri='postgresql:///goals'):
     """Connect the database to our Flask app."""
 
-    # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///goals'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # Configure to use our PostgreSQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     db.app = app
     db.init_app(app)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
     # As a convenience, if we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
 
     from server import app
-    connect_to_db(app)
-    print("Connected to DB.")
-
-
-
-
+    init_app()
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 
